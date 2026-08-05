@@ -1,12 +1,11 @@
 # Build on Push
-name: Build on Pull Request
+name: Build on Dispatch
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  Build_on_PR:
-    name: Trigger the Workflow on PR event
+  Build_on_Dispatch:
+    name: Trigger the Workflow on Dispatch event
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
