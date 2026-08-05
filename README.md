@@ -1,6 +1,11 @@
 # Flask Calculator CI
 
-A small Flask app for practicing a GitHub self-hosted runner.
+A small Flask app for practicing GitHub Actions CI on a hosted runner.
+
+## Continuous Integration
+
+CI runs automatically via GitHub Actions on `ubuntu-latest` (a GitHub-hosted runner).
+See `.github/workflows/ci.yml`. Triggers practiced: push, pull_request, workflow_dispatch.
 
 ## Setup
 
