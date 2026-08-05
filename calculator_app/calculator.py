@@ -1,10 +1,16 @@
-from flask import Flask
+def add(a, b):
+    return a + b
 
 
-def create_app():
-    app = Flask(__name__)
+def subtract(a, b):
+    return a - b
 
-    from calculator_app.main import bp
-    app.register_blueprint(bp)
 
-    return app
+def multiply(a, b):
+    return a * b
+
+
+def divide(a, b):
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
