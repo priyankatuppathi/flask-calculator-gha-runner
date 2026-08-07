@@ -1,22 +1,20 @@
-name: S3 Buckests Listing
+name: AWS EC2 and S3 Demo
 on:
   workflow_dispatch:
 
 jobs:
   S3buckets:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
     steps:
-      - name: Configure AWS Credentials
-        run: |
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}
-          export AWS_SECRRET_ACCESS_KEY=${{ secrets.AWS_SECRET_KEY }}
-          export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
-
       - name: Create a file
-        run: echo "Hello from GHA!" > index.html
+        run: echo "Hello from GHA!" > File1.txt
 
       - name: Create an S3 Bucket
-        run:  aws s3 mb s3://myUniqueBucket --region $AWS_DEFAULT_REGION
+        run:  aws s3 mb s3://myuniquebucket-${{ github.run_id }} --region $AWS_DEFAULT_REGION
 
       - name: List all the S3 Buckets
         run: aws s3 ls
@@ -33,17 +31,14 @@ jobs:
       - name: Configure AWS Credentials
         run: |
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}
-          export AWS_SECRRET_ACCESS_KEY=${{ secrets.AWS_SECRET_KEY }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_KEY }}
           export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Create an EC2 Instance
-        run: |
           aws ec2 run-instances \
-            --image-id ami-0c55b159cbfafe1f0 \	
-            --instance-type t2.micro \
-            --security-group-ids sg-0123456789abcdef0
+            --image-id ami-0ff8a91507f77f867 \
+            --instance-type t3.micro \
+            --security-group-ids sg-054b14db572d7a21
 
-      - name: List all the instances
-        run: aws ec2 describe-instances
+          aws ec2 describe-instances
 
         
