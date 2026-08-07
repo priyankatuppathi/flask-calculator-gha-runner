@@ -37,7 +37,7 @@ jobs:
           aws ec2 run-instances \
             --image-id ami-0ff8a91507f77f867 \
             --instance-type t3.micro \
-            --security-group-ids sg-054b14db572d7a21
+            --security-group-ids sg-024acc3fa5e677c4f
 
           aws ec2 describe-instances
 
