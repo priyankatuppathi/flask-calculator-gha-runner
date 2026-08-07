@@ -1,11 +1,19 @@
-# Flask Calculator CI
+# Flask Calculator — GitHub Actions CI/CD
 
-A small Flask app for practicing GitHub Actions CI on a hosted runner.
+A small Flask API used to explore GitHub Actions CI/CD on hosted runners — covering multiple workflow triggers, the pull-request flow, repository secrets, and AWS automation.
 
 ## Continuous Integration
 
-CI runs automatically via GitHub Actions on `ubuntu-latest` (a GitHub-hosted runner).
-See `.github/workflows/ci.yml`. Triggers practiced: push, pull_request, workflow_dispatch.
+All workflows run on `ubuntu-latest` (GitHub-hosted). Each trigger is kept in its own file:
+
+| Workflow                                | Trigger             |
+|-----------------------------------------|---------------------|
+| `.github/workflows/ci-push.yml`         | `push` to `main`    |
+| `.github/workflows/ci-pull-request.yml` | `pull_request`      |
+| `.github/workflows/ci-dispatch.yml`     | `workflow_dispatch` |
+| `.github/workflows/aws-demo.yml`        | `workflow_dispatch` (AWS S3 + EC2) |
+
+Each CI run: checkout → set up Python 3.11 → install dependencies → run `pytest`.
 
 ## Setup
 
@@ -24,12 +32,10 @@ See `.github/workflows/ci.yml`. Triggers practiced: push, pull_request, workflow
 
 ## Endpoints
 
-- GET / — info
-- GET /health — health check
-- POST /calculate — body: {"operation": "add", "a": 2, "b": 3}
+- `GET /` — info
+- `GET /health` — health check
+- `POST /calculate` — body: `{"operation": "add", "a": 2, "b": 3}`
 
-## Self-hosted runner
+## AWS
 
-1. Repo → Settings → Actions → Runners → New self-hosted runner.
-2. Follow the download/configure/run steps on your machine.
-3. Set runs-on: self-hosted in .github/workflows/ci.yml.
+`aws-demo.yml` accesses AWS via the AWS CLI using repository secrets (`AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `AWS_DEFAULT_REGION`) — creating an S3 bucket, uploading/downloading a file, and launching an EC2 instance.
