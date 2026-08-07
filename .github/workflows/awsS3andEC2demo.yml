@@ -1,0 +1,49 @@
+name: S3 Buckests Listing
+on:
+  workflow_dispatch:
+
+jobs:
+  S3buckets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        run: |
+          export AWS_ACCESS_KEY_ID = ${{ secrets.AWS_ACCESS_KEY }}
+          export AWS_SECRRET_ACCESS_KEY = ${{ secrets.AWS_SECRET_KEY }}
+          export AWS_DEFAULT_REGION = ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Create a file
+        run: echo "Hello from GHA!" > index.html
+
+      - name: Create an S3 Bucket
+        run:  aws s3 mb s3://myUniqueBucket --region $AWS_DEFAULT_REGION
+
+      - name: List all the S3 Buckets
+        run: aws s3 ls
+
+      - name: Upload the file to S3 Bucket
+        run: aws s3 cp ./File1.txt s3://ghademo
+
+      - name:  Download a file from S3 Bucket and Rename it
+        run: aws s3 cp s3://ghademo/NewFile.txt ./File2.txt
+
+  EC2Instances:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        run: |
+          export AWS_ACCESS_KEY_ID = ${{ secrets.AWS_ACCESS_KEY }}
+          export AWS_SECRRET_ACCESS_KEY = ${{ secrets.AWS_SECRET_KEY }}
+          export AWS_DEFAULT_REGION = ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Create an EC2 Instance
+        run: |
+          aws ec2 run-instances \
+            --image-id ami-0c55b159cbfafe1f0 \	
+            --instance-type t2.micro \
+            --security-group-ids sg-0123456789abcdef0
+
+      - name: List all the instances
+        run: aws ec2 describe-instances
+
+        
